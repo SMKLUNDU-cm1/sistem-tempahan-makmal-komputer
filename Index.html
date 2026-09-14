@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Tempahan Makmal Komputer - SMK Lundu</title>
+
+  <!-- Google Fonts & Bootstrap 5 & FullCalendar -->
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <style>
+    /* WINDOWS 11 FLUENT DESIGN SYSTEM THEME */
+    :root {
+      --win-bg: #f3f3f3;
+      --win-accent: #005fb8;
+      --win-accent-hover: #0052a3;
+      --win-card-bg: rgba(255, 255, 255, 0.75);
+      --win-card-solid: #ffffff;
+      --win-glass-border: rgba(0, 0, 0, 0.08);
+      --win-text-main: #1a1a1a;
+      --win-text-muted: #5d5d5d;
+      --win-radius: 12px;
+      --win-radius-sm: 8px;
+      --win-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    body { 
+      font-family: 'Segoe UI Variable Display', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; 
+      background: var(--win-bg) linear-gradient(180deg, #e8eef5 0%, #f3f3f3 300px);
+      color: var(--win-text-main); 
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    .header-card { 
+      background: rgba(255, 255, 255, 0.82); 
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--win-glass-border);
+      border-radius: var(--win-radius); 
+      padding: 20px 28px; 
+      box-shadow: var(--win-shadow);
+    }
+
+    .school-logo {
+      height: 62px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .main-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--win-glass-border);
+      border-radius: var(--win-radius);
+      box-shadow: var(--win-shadow);
+      padding: 28px;
+    }
+
+    .nav-pills {
+      background: rgba(0, 0, 0, 0.04);
+      padding: 4px;
+      border-radius: var(--win-radius-sm);
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .nav-pills .nav-link {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--win-text-muted);
+      border-radius: 6px;
+      padding: 8px 20px;
+      transition: all 0.15s ease-in-out;
+      border: none;
+    }
+
+    .nav-pills .nav-link:hover {
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--win-text-main);
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: var(--win-card-solid);
+      color: var(--win-accent);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-custom { 
+      border-radius: var(--win-radius-sm); 
+      border: 1px solid var(--win-glass-border); 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+      background: var(--win-card-solid); 
+      padding: 22px; 
+      margin-bottom: 20px; 
+    }
+
+    .form-control, .form-select {
+      border-radius: 6px;
+      border: 1px solid #d1d1d1;
+      background-color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      transition: all 0.2s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--win-accent);
+      box-shadow: 0 0 0 2px rgba(0, 95, 184, 0.2);
+      background-color: #ffffff;
+    }
+
+    .btn {
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--win-accent);
+      border-color: var(--win-accent);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--win-accent-hover);
+      border-color: var(--win-accent-hover);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .stat-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--win-card-solid);
+      border: 1px solid var(--win-glass-border);
+      border-radius: var(--win-radius-sm);
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .stat-card h3 { margin: 0; font-size: 26px; font-weight: 700; color: var(--win-accent); }
+    .stat-card p { margin: 4px 0 0; font-size: 11px; color: var(--win-text-muted); font-weight: 600; }
+
+    .time-slot-grid { display: grid; grid-template-columns: repeat(11, 1fr); gap: 4px; margin-top: 10px; }
+    .time-slot-box { padding: 8px 2px; text-align: center; border-radius: 6px; font-size: 0.65rem; font-weight: 700; border: 1px solid #e0e0e0; }
+    .slot-free { background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+    .slot-busy { background-color: #ffebee; color: #c62828; border-color: #ffcdd2; }
+    .slot-pending { background-color: #fffde7; color: #f57f17; border-color: #fff9c4; }
+
+    #calendar { max-height: 550px; }
+
+    .modal-content { 
+      border-radius: var(--win-radius); 
+      border: 1px solid var(--win-glass-border); 
+      box-shadow: 0 16px 32px rgba(0,0,0,0.12); 
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+    }
+
+    .icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px auto;
+      font-size: 30px;
+    }
+
+    @media print {
+      body { background: white !important; padding: 0 !important; color: black !important; }
+      .container, .main-card { background: white !important; box-shadow: none !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
+      .header-card, .nav, .nav-pills, .no-print, button, .alert { display: none !important; }
+      #modalSlip, #modalSlipPelaporan { display: block !important; position: static !important; width: 100% !important; background: white !important; }
+      .modal-dialog { max-width: 100% !important; margin: 0 !important; }
+      .modal-content { border: none !important; box-shadow: none !important; }
+      #adminTabLaporan .card-custom { border: none !important; box-shadow: none !important; padding: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-4">
+  <div class="header-card d-flex flex-column flex-md-row align-items-center justify-content-between text-center text-md-start mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <img src="https://lh3.googleusercontent.com/d/1Zrkv42oKLawd_FrlpUP0pDKm1EYh7s0g" alt="Logo SMK Lundu" class="school-logo">
+      <div>
+        <h2 class="fw-bold mb-0 text-dark" style="letter-spacing: -0.5px;">SMK LUNDU</h2>
+        <p class="mb-0 text-muted small fw-semibold">Sistem Tempahan Penggunaan Makmal Komputer</p>
+      </div>
+    </div>
+    <div class="mt-3 mt-md-0 d-flex gap-2">
+      <button class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2 shadow-sm" onclick="cubaBukaAdmin()">🔑 Portal Admin ICT</button>
+      <button class="btn btn-light text-primary border fw-bold btn-sm px-3 py-2 shadow-sm" onclick="cubaBukaPengetua()">🎓 Portal Pengetua</button>
+    </div>
+  </div>
+
+  <div class="main-card">
+    <div class="mb-4 text-center text-md-start">
+      <ul class="nav nav-pills flex-wrap" id="mainTabs">
+        <li class="nav-item">
+          <button class="nav-link active" id="btnTabForm" onclick="paparTab('form')">📝 Borang Tempahan</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="btnTabSemak" onclick="paparTab('semak')">🔍 Semak Status & Cetak Slip</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link" id="btnTabCalendar" onclick="paparTab('calendar')">📅 Paparan Kalendar</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 1. TAB BORANG TEMPAHAN -->
+    <div id="tabForm">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card-custom">
+            <h5 class="fw-bold text-primary mb-3">📝 Borang Permohonan Makmal</h5>
+            <form id="bookingForm" onsubmit="handleFormSubmit(event)">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold small">Tarikh Permohonan</label>
+                  <input type="date" class="form-control" id="tarikh" name="tarikh" required onchange="updateGridAndAvailability()">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold small">Pilih Makmal</label>
+                  <select class="form-select" id="makmal" name="makmal" required onchange="updateGridAndAvailability()">
+                    <option value="Makmal Komputer 1">MAKMAL KOMPUTER 1</option>
+                    <option value="Makmal Komputer 2">MAKMAL KOMPUTER 2</option>
+                    <option value="Makmal Komputer 3">MAKMAL KOMPUTER 3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold small">📊 Visual Slot Masa Harian (07:00 AM - 05:00 PM):</label>
+                <div class="time-slot-grid" id="timeSlotGrid"></div>
+                <div class="mt-2 text-center" style="font-size: 0.72rem;">
+                  <span class="badge slot-free me-1">🟩 Kosong</span>
+                  <span class="badge slot-busy me-1">🟥 Ditempah/Disekat</span>
+                  <span class="badge slot-pending me-1">🟨 Menunggu Kelulusan</span>
+                </div>
+              </div>
+
+              <div id="availabilityStatus" class="p-2 bg-light border rounded text-muted small mb-3">
+                Sila pilih Tarikh dan Makmal.
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold small">Nama Pemohon</label>
+                  <input type="text" class="form-control" name="nama" placeholder="Cth: Alex Anak Dino" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold small">Email Pemohon</label>
+                  <input type="email" class="form-control" name="email" placeholder="contoh@gmail.com" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Jawatan Pemohon</label>
+                <input type="text" class="form-control" name="jawatan" placeholder="Cth: Guru Sains / AKP / Pelajar" required>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label class="form-label fw-bold small">Jam Mula</label>
+                  <input type="time" class="form-control" id="jamMula" name="jamMula" min="07:00" max="17:00" required onchange="calculateDuration(); updateGridAndAvailability();">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label fw-bold small">Jam Tamat</label>
+                  <input type="time" class="form-control" id="jamTamat" name="jamTamat" min="07:00" max="17:00" required onchange="calculateDuration(); updateGridAndAvailability();">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label fw-bold small">Tempoh Masa</label>
+                  <input type="text" class="form-control bg-light" id="tempoh" name="tempoh" readonly placeholder="Auto kira">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Tujuan Penggunaan</label>
+                <textarea class="form-control" name="tujuan" rows="2" placeholder="Cth: Kelas Sains Komputer" required></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Bahan Keperluan / Alat</label>
+                <input type="text" class="form-control" name="bahanPeralatan" placeholder="Cth: LCD / Tablet / Tiada">
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm" id="submitBtn">Hantar Permohonan</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card-custom">
+            <h5 class="fw-bold text-dark mb-3">📋 Tempahan Terkini Makmal</h5>
+            <div id="bookedSlotsContainer" style="max-height: 600px; overflow-y: auto;">
+              <p class="text-muted small">Memuatkan jadual tempahan...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TAB SEMAK STATUS & CETAK SLIP -->
+    <div id="tabSemak" class="d-none">
+      <div class="card-custom max-width-700 mx-auto" style="max-width: 680px;">
+        <h5 class="fw-bold text-primary mb-2 text-center">🔍 Semakan Status & Cetak Slip Tempahan</h5>
+        <p class="text-muted small text-center mb-4">Masukkan <b>Emel</b> atau <b>Nama Pemohon</b> untuk menyemak permohonan dan mencetak slip pengesahan.</p>
+        
+        <div class="input-group mb-4">
+          <input type="text" id="inputCariUser" class="form-control" placeholder="Masukkan Emel atau Nama Pemohon...">
+          <button class="btn btn-primary px-4 fw-bold" onclick="prosesSemakUser()">Cari Rekod</button>
+        </div>
+
+        <div id="hasilSemakanUser"></div>
+      </div>
+    </div>
+
+    <!-- 3. TAB KALENDAR -->
+    <div id="tabCalendar" class="d-none">
+      <div class="card-custom">
+        <h5 class="fw-bold text-dark mb-3">📅 Kalendar Permohonan Makmal Komputer</h5>
+        <div id="calendar"></div>
+      </div>
+    </div>
+
+    <!-- 4. PORTAL ADMIN ICT -->
+    <div id="tabAdmin" class="d-none">
+      <div class="alert alert-primary d-flex justify-content-between align-items-center mb-4 rounded-3 shadow-sm">
+        <span class="fw-bold">🔐 SESI AKTIF: PORTAL ADMIN ICT</span>
+        <button class="btn btn-sm btn-outline-danger fw-bold" onclick="logKeluarAdmin()">Log Keluar Admin</button>
+      </div>
+
+      <div class="mb-4 text-center text-md-start">
+        <ul class="nav nav-pills flex-wrap" id="adminTabs">
+          <li class="nav-item">
+            <button class="nav-link active" id="btnAdminTabPengurusan" onclick="paparAdminTab('pengurusan')">📋 Pengurusan Tempahan</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="btnAdminTabSekat" onclick="paparAdminTab('sekat')">⛔ Sekat Slot</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="btnAdminTabNotifikasi" onclick="paparAdminTab('notifikasi')">👥 Notifikasi Emel</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="btnAdminTabProfil" onclick="paparAdminTab('profil')">🔑 Profil Admin</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="btnAdminTabLaporan" onclick="paparAdminTab('laporan')">📊 Penjanaan Laporan</button>
+          </li>
+        </ul>
+      </div>
+
+      <div id="adminTabPengurusan">
+        <div class="card-custom bg-light mb-3">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h6 class="fw-bold text-dark mb-0">📅 Penapis Tahun & Bulan Admin:</h6>
+            <div class="d-flex gap-2">
+              <select id="filterAdminTahunStat" class="form-select form-select-sm" onchange="renderAdminDashboard()">
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+              </select>
+              <select id="filterAdminBulanStat" class="form-select form-select-sm" onchange="renderAdminDashboard()">
+                <option value="ALL">-- Semua Bulan --</option>
+                <option value="01">Januari</option><option value="02">Februari</option><option value="03">Mac</option>
+                <option value="04">April</option><option value="05">Mei</option><option value="06">Jun</option>
+                <option value="07">Julai</option><option value="08">Ogos</option><option value="09">September</option>
+                <option value="10">Oktober</option><option value="11">November</option><option value="12">Disember</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card-grid mb-3">
+          <div class="stat-card"><h3 id="statAdminTotal">0</h3><p>JUMLAH PERMOHONAN</p></div>
+          <div class="stat-card" style="background: #e8f5e9;"><h3 id="statAdminApproved" style="color: #2e7d32;">0</h3><p style="color: #2e7d32;">DILULUSKAN</p></div>
+          <div class="stat-card" style="background: #fffde7;"><h3 id="statAdminPending" style="color: #f57f17;">0</h3><p style="color: #f57f17;">MENUNGGU KELULUSAN</p></div>
+          <div class="stat-card" style="background: #ffebee;"><h3 id="statAdminRejected" style="color: #c62828;">0</h3><p style="color: #c62828;">DITOLAK</p></div>
+          <div class="stat-card" style="background: #f1f5f9;"><h3 id="statAdminBlocked" style="color: #475569;">0</h3><p style="color: #475569;">SLOT DISEKAT</p></div>
+        </div>
+
+        <div class="card-custom">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h5 class="fw-bold text-primary mb-0">📋 Pengurusan Tempahan Makmal</h5>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-success fw-bold" onclick="muatTurunCSV()">📥 Muat Turun CSV</button>
+              <button class="btn btn-sm btn-outline-primary fw-bold" onclick="bukaGoogleSheet()">📊 Raw Data Sheet</button>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3 bg-light p-2 rounded border">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold mb-1">Tapis Status:</label>
+              <select id="filterAdminStatus" class="form-select form-select-sm" onchange="buildAdminTable(allBookings)">
+                <option value="">-- Semua Status --</option>
+                <option value="Approved">Approved (Diluluskan)</option>
+                <option value="Pending for approval">Pending (Menunggu)</option>
+                <option value="Rejected">Rejected (Ditolak)</option>
+                <option value="SEKATAN:">Blocked (Disekat)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold mb-1">Carian Kata Kunci:</label>
+              <input type="text" id="filterAdminSearch" class="form-control form-control-sm" placeholder="Cari nama, emel, tujuan..." oninput="buildAdminTable(allBookings)">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle" style="font-size: 0.8rem;">
+              <thead class="table-dark">
+                <tr>
+                  <th>Tarikh</th>
+                  <th>Makmal</th>
+                  <th>Pemohon</th>
+                  <th>Masa</th>
+                  <th>Tujuan & Catatan</th>
+                  <th>Status</th>
+                  <th class="text-center">Tindakan Admin</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody">
+                <tr><td colspan="7" class="text-center py-3">Memuatkan data...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="adminTabSekat" class="d-none">
+        <div class="card-custom border-top border-4 border-warning mb-3 mx-auto" style="max-width: 600px;">
+          <h5 class="fw-bold text-dark mb-3">⛔ Sekat Slot Masa (Admin Block)</h5>
+          <form id="blockForm" onsubmit="handleBlockSubmit(event)">
+            <div class="mb-2">
+              <label class="form-label small fw-bold">Tarikh Mula Sekatan</label>
+              <input type="date" class="form-control form-control-sm" name="tarikh" required>
+            </div>
+            <div class="mb-2">
+              <label class="form-label small fw-bold">Ulang Mingguan Sehingga (Opsional)</label>
+              <input type="date" class="form-control form-control-sm" name="repeatUntil">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small fw-bold">Pilih Makmal</label>
+              <select class="form-select form-select-sm" name="makmal" required>
+                <option value="Makmal Komputer 1">MAKMAL KOMPUTER 1</option>
+                <option value="Makmal Komputer 2">MAKMAL KOMPUTER 2</option>
+                <option value="Makmal Komputer 3">MAKMAL KOMPUTER 3</option>
+              </select>
+            </div>
+            <div class="row g-2 mb-2">
+              <div class="col-6">
+                <label class="form-label small fw-bold">Jam Mula</label>
+                <input type="time" class="form-control form-control-sm" id="adminMula" name="jamMula" min="07:00" max="17:00" required onchange="calculateAdminDuration()">
+              </div>
+              <div class="col-6">
+                <label class="form-label small fw-bold">Jam Tamat</label>
+                <input type="time" class="form-control form-control-sm" id="adminTamat" name="jamTamat" min="07:00" max="17:00" required onchange="calculateAdminDuration()">
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="form-label small fw-bold">Tempoh Masa</label>
+              <input type="text" class="form-control form-control-sm bg-light" id="adminTempoh" name="tempoh" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Sebab Sekatan</label>
+              <input type="text" class="form-control form-control-sm" name="tujuan" value="KELAS ICT" required>
+            </div>
+            <button type="submit" class="btn btn-warning btn-sm w-100 fw-bold">Sekat Slot Ini</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="adminTabNotifikasi" class="d-none">
+        <div class="card-custom border-top border-4 border-info mb-3 mx-auto" style="max-width: 600px;">
+          <h5 class="fw-bold text-dark mb-3">👥 Admin Notifikasi Emel (Max: 3)</h5>
+          <form id="addAdminForm" onsubmit="handleAddAdminSubmit(event)" class="mb-3">
+            <div class="mb-2">
+              <input type="text" class="form-control form-control-sm" id="adminNama" placeholder="Nama Admin / Guru" required>
+            </div>
+            <div class="mb-2">
+              <input type="email" class="form-control form-control-sm" id="adminEmail" placeholder="contoh@smklundu.edu.my" required>
+            </div>
+            <button type="submit" class="btn btn-info btn-sm w-100 fw-bold text-white" id="addAdminBtn">+ Tambah Admin Notifikasi</button>
+          </form>
+          <div id="adminListContainer" class="list-group list-group-flush"></div>
+        </div>
+      </div>
+
+      <div id="adminTabProfil" class="d-none">
+        <div class="card-custom border-top border-4 border-secondary mx-auto" style="max-width: 600px;">
+          <h5 class="fw-bold text-dark mb-3">🔑 Profil & Kata Laluan Admin</h5>
+          <div class="mb-2">
+            <label class="form-label small fw-bold">Nama Admin</label>
+            <input type="text" id="tetapanAdminNama" class="form-control form-control-sm">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold">Emel Admin</label>
+            <input type="email" id="tetapanAdminEmel" class="form-control form-control-sm">
+          </div>
+          <div class="mb-2">
+            <label class="form-label small fw-bold">Kata Laluan Baharu</label>
+            <input type="password" id="tetapanAdminPass" class="form-control form-control-sm">
+          </div>
+          <button class="btn btn-secondary btn-sm w-100 fw-bold mt-2" onclick="simpanProfilAdmin()">Simpan Tetapan Admin</button>
+          <div id="msgTetapanAdmin" class="small mt-2 text-center text-success fw-bold"></div>
+        </div>
+      </div>
+
+      <div id="adminTabLaporan" class="d-none">
+        <div class="card-custom border-top border-4 border-primary">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-primary mb-0">📊 Penjanaan Laporan Admin</h5>
+            <button class="btn btn-sm btn-success fw-bold" onclick="window.print()">🖨️ Cetak / PDF</button>
+          </div>
+          
+          <div class="row g-2 mb-3 bg-light p-3 rounded border">
+            <div class="col-md-6">
+              <select id="reportTahun" class="form-select form-select-sm" onchange="janaJadualLaporanAdmin()">
+                <option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select id="reportBulan" class="form-select form-select-sm" onchange="janaJadualLaporanAdmin()">
+                <option value="ALL">-- Keseluruhan Tahun --</option>
+                <option value="01">Januari</option><option value="02">Februari</option><option value="03">Mac</option>
+                <option value="04">April</option><option value="05">Mei</option><option value="06">Jun</option>
+                <option value="07">Julai</option><option value="08">Ogos</option><option value="09">September</option>
+                <option value="10">Oktober</option><option value="11">November</option><option value="12">Disember</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="row g-3 mb-4 text-center">
+            <div class="col-md-4"><div class="p-3 border rounded bg-primary text-white"><span class="small fw-bold d-block">JUMLAH PERMOHONAN</span><h3 class="fw-bold mb-0" id="repStatTotal">0</h3></div></div>
+            <div class="col-md-4"><div class="p-3 border rounded bg-success text-white"><span class="small fw-bold d-block">DILULUSKAN</span><h3 class="fw-bold mb-0" id="repStatApproved">0</h3></div></div>
+            <div class="col-md-4"><div class="p-3 border rounded bg-danger text-white"><span class="small fw-bold d-block">DITOLAK</span><h3 class="fw-bold mb-0" id="repStatRejected">0</h3></div></div>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle small">
+              <thead class="table-dark">
+                <tr>
+                  <th>Pemohon</th><th>Emel & Jawatan</th><th class="text-center">Mohon</th><th class="text-center">Diluluskan</th><th class="text-center">Ditolak</th><th>Senarai Rekod Tempahan</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyLaporanPengguna">
+                <tr><td colspan="6" class="text-center text-muted">Sila pilih penapis laporan.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. PORTAL PENGETUA -->
+    <div id="tabPengetua" class="d-none">
+      <div class="alert alert-warning d-flex justify-content-between align-items-center mb-4 rounded-3 shadow-sm">
+        <span class="fw-bold text-dark">🎓 SESI AKTIF: PORTAL PELAPORAN PENGETUA</span>
+        <button class="btn btn-sm btn-outline-danger fw-bold" onclick="logKeluarPengetua()">Log Keluar Pengetua</button>
+      </div>
+
+      <div class="card-custom bg-light mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div>
+            <h5 class="fw-bold text-dark mb-1">📈 Pelaporan Penggunaan Makmal Komputer</h5>
+            <p class="text-muted small mb-0">Pilih bulan dan tahun untuk jana laporan serta pengesahan rasmi Pengetua.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <select id="pilihTahunPengetua" class="form-select form-select-sm" onchange="janaLaporanPengetua()">
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+            </select>
+            <select id="pilihBulanPengetua" class="form-select form-select-sm" onchange="janaLaporanPengetua()">
+              <option value="01">Januari</option><option value="02">Februari</option><option value="03">Mac</option>
+              <option value="04">April</option><option value="05">Mei</option><option value="06">Jun</option>
+              <option value="07">Julai</option><option value="08">Ogos</option><option value="09">September</option>
+              <option value="10">Oktober</option><option value="11">November</option><option value="12">Disember</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card-grid mb-4">
+        <div class="stat-card">
+          <h3 id="pengetuaTotalMonth">0</h3>
+          <p>JUMLAH TEMPAHAN BULANAN</p>
+        </div>
+        <div class="stat-card" style="background: #e8f5e9;">
+          <h3 id="pengetuaApprovedMonth" style="color: #2e7d32;">0</h3>
+          <p style="color: #2e7d32;">DILULUSKAN</p>
+        </div>
+        <div class="stat-card" style="background: #ffebee;">
+          <h3 id="pengetuaRejectedMonth" style="color: #c62828;">0</h3>
+          <p style="color: #c62828;">DITOLAK / MENUNGGU</p>
+        </div>
+      </div>
+
+      <div class="card-custom mb-4 border-2 border-info">
+        <h5 class="fw-bold text-dark mb-3" id="titleSenaraiPengetua">📋 Senarai Tempahan Yang Diluluskan (0 Rekod)</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle small mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Tarikh</th>
+                <th>Makmal</th>
+                <th>Pemohon & Jawatan</th>
+                <th>Masa</th>
+                <th>Tujuan & Keperluan</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tableRekodTempahanPengetua">
+              <tr><td colspan="6" class="text-center text-muted py-3">Memuatkan senarai rekod...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card-custom border-2 border-primary mb-4">
+        <h5 class="fw-bold text-primary mb-3">✍️ Borang Pengesahan Laporan Bulanan Pengetua</h5>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold">Bulan & Tahun Pelaporan</label>
+            <input type="text" id="pengesahBulanTahun" class="form-control bg-light" readonly>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold">Nama Pengesah</label>
+            <input type="text" id="pengesahNama" class="form-control" value="Pengetua SMK Lundu">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-bold">Catatan / Ulasan Pengetua</label>
+          <textarea id="pengesahCatatan" class="form-control" rows="2" placeholder="Masukkan ulasan atau catatan rasmi di sini..."></textarea>
+        </div>
+        <button class="btn btn-success fw-bold px-4" onclick="hantarPengesahanPengetua()">✅ Sahkan & Rekodkan Laporan Bulanan</button>
+        <div id="msgPengesahanPengetua" class="small mt-2 fw-bold text-success"></div>
+      </div>
+
+      <div class="card-custom">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="fw-bold text-dark mb-0">📑 Rekod Laporan Bulanan Yang Disahkan</h5>
+          <button class="btn btn-sm btn-outline-primary fw-bold" onclick="loadRekodPengesahanPengetua()">🔄 Kemaskini Senarai</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle small">
+            <thead class="table-light">
+              <tr>
+                <th>Tarikh</th>
+                <th>Pengesah</th>
+                <th>Catatan / Ulasan</th>
+                <th class="text-center">Cetak Laporan</th>
+                <th class="text-center">Padam Rekod</th>
+              </tr>
+            </thead>
+            <tbody id="tableRekodPengesahanPengetua">
+              <tr><td colspan="5" class="text-center text-muted">Memuatkan rekod pengesahan...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP MODALS WINDOWS 11 -->
+<div class="modal fade" id="modalCustomAlert" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <div class="modal-body p-2">
+        <div id="alertIconBox" class="icon-circle bg-primary-subtle text-primary">ℹ️</div>
+        <h4 class="fw-bold mb-2" id="alertTitle">Notifikasi</h4>
+        <p class="text-muted small mb-4" id="alertMessage">Mesej maklumat...</p>
+        <button type="button" class="btn btn-primary px-4 fw-bold w-100" data-bs-dismiss="modal">Faham & Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCustomConfirm" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <div class="modal-body p-2">
+        <div class="icon-circle bg-warning-subtle text-warning mb-3">⚠️</div>
+        <h4 class="fw-bold mb-2" id="confirmTitle">Pengesahan Tindakan</h4>
+        <p class="text-muted small mb-4" id="confirmMessage">Adakah anda pasti untuk meneruskan tindakan ini?</p>
+        <div class="d-flex justify-content-center gap-2">
+          <button type="button" class="btn btn-light px-4 fw-bold w-50" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold w-50" id="btnConfirmAction">Ya, Teruskan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalBatalUser" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-danger">🗑️ Pembatalan Tempahan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">Untuk keselamatan, sila masukkan <b>EMEL</b> yang digunakan semasa memohon:</p>
+        <input type="hidden" id="batalRowNum">
+        <input type="email" id="batalEmailInput" class="form-control mb-3" placeholder="contoh@gmail.com" required>
+        <button class="btn btn-danger w-100 fw-bold" onclick="sahkanPembatalanUser()">Sahkan & Batal Tempahan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalTolakAdmin" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-danger">❌ Sebab Penolakan Permohonan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="tolakRowNum">
+        <p class="text-muted small mb-2">Sila berikan catatan/sebab penolakan untuk makluman pemohon:</p>
+        <textarea id="tolakCatatanInput" class="form-control mb-3" rows="3" placeholder="Cth: Bertindih dengan aktiviti rasmi sekolah" required></textarea>
+        <button class="btn btn-danger w-100 fw-bold" onclick="sahkanPenolakanAdmin()">Hantar & Tolak Permohonan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalLoginAdmin" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0"><h5 class="modal-title fw-bold text-primary">🔒 Log Masuk Portal Admin ICT</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="password" id="inputPassAdmin" class="form-control mb-2" placeholder="Masukkan kata laluan Admin" onkeydown="if(event.key==='Enter') prosesLoginAdmin()">
+        <div id="msgLoginAdmin" class="text-danger small fw-bold mb-3"></div>
+        <button class="btn btn-primary w-100 fw-bold" onclick="prosesLoginAdmin()">Log Masuk</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalLoginPengetua" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0"><h5 class="modal-title fw-bold text-dark">🎓 Log Masuk Portal Pengetua</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="password" id="inputPassPengetua" class="form-control mb-2" placeholder="Masukkan kata laluan Pengetua" onkeydown="if(event.key==='Enter') prosesLoginPengetua()">
+        <div id="msgLoginPengetua" class="text-danger small fw-bold mb-3"></div>
+        <button class="btn btn-dark w-100 fw-bold" onclick="prosesLoginPengetua()">Log Masuk</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalEdit" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0"><h5 class="modal-title fw-bold">✏️ Sunting Rekod Tempahan</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="editRowNum">
+        <div class="row g-2 mb-2">
+          <div class="col-6"><input type="date" id="editTarikh" class="form-control form-control-sm"></div>
+          <div class="col-6">
+            <select id="editMakmal" class="form-select form-select-sm">
+              <option value="Makmal Komputer 1">Makmal Komputer 1</option>
+              <option value="Makmal Komputer 2">Makmal Komputer 2</option>
+              <option value="Makmal Komputer 3">Makmal Komputer 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-2"><input type="text" id="editNama" class="form-control form-control-sm" placeholder="Nama Pemohon"></div>
+        <div class="row g-2 mb-2">
+          <div class="col-6"><input type="email" id="editEmail" class="form-control form-control-sm" placeholder="Emel"></div>
+          <div class="col-6"><input type="text" id="editJawatan" class="form-control form-control-sm" placeholder="Jawatan"></div>
+        </div>
+        <div class="row g-2 mb-2">
+          <div class="col-6"><input type="time" id="editJamMula" class="form-control form-control-sm"></div>
+          <div class="col-6"><input type="time" id="editJamTamat" class="form-control form-control-sm"></div>
+        </div>
+        <div class="mb-2"><input type="text" id="editTujuan" class="form-control form-control-sm" placeholder="Tujuan"></div>
+        <div class="mb-3"><input type="text" id="editBahan" class="form-control form-control-sm" placeholder="Bahan / Peralatan"></div>
+        <button class="btn btn-warning w-100 fw-bold" onclick="simpanEditData()">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSlip" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-4">
+      <div id="slipContent"></div>
+      <div class="no-print text-end mt-3">
+        <button class="btn btn-success fw-bold px-4" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+        <button class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSlipPelaporan" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-4">
+      <div id="slipPelaporanContent"></div>
+      <div class="no-print text-end mt-3">
+        <button class="btn btn-success fw-bold px-4" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+        <button class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ==========================================
+// PASTI KAN URL WEB APP GAS ANDA DITAMPAL DI SINI:
+// ==========================================
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbye11Gn7tiiSX1n0YG10Vu38722cC98n8AMAfcUmUeGlDqoxjMyB5yG6UajOENdSk0N/exec";
+
+// FUNGSI UTAMA ENGINE KOMUNIKASI GITHUB PAGES -> GOOGLE APPS SCRIPT
+async function callApi(action, data = {}) {
+  try {
+    const response = await fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: action, data: data })
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("API Error:", err);
+    return "RALAT: Gagal berhubung dengan pelayan (Server Error).";
+  }
+}
+
+let allBookings = [];
+let isAdminLoggedIn = false;
+let isPengetuaLoggedIn = false;
+let calendarInstance = null;
+let currentPengetuaData = { nama: 'Pengetua SMK Lundu', jawatan: 'Pengetua' };
+let globalRekodPengetua = [];
+let pendingConfirmCallback = null;
+
+function showNotification(title, message, type = 'info') {
+  let iconBox = document.getElementById('alertIconBox');
+  let titleEl = document.getElementById('alertTitle');
+  let msgEl = document.getElementById('alertMessage');
+
+  titleEl.innerText = title;
+  msgEl.innerText = message;
+
+  if (type === 'success' || message.includes('✅') || message.includes('berjaya')) {
+    iconBox.className = 'icon-circle bg-success-subtle text-success';
+    iconBox.innerHTML = '🎉';
+  } else if (type === 'danger' || message.includes('RALAT') || message.includes('⚠️') || message.includes('❌')) {
+    iconBox.className = 'icon-circle bg-danger-subtle text-danger';
+    iconBox.innerHTML = '❌';
+  } else if (type === 'warning') {
+    iconBox.className = 'icon-circle bg-warning-subtle text-warning';
+    iconBox.innerHTML = '⚠️';
+  } else {
+    iconBox.className = 'icon-circle bg-primary-subtle text-primary';
+    iconBox.innerHTML = 'ℹ️';
+  }
+
+  let modal = new bootstrap.Modal(document.getElementById('modalCustomAlert'));
+  modal.show();
+}
+
+function showConfirm(title, message, onConfirm) {
+  document.getElementById('confirmTitle').innerText = title;
+  document.getElementById('confirmMessage').innerText = message;
+  pendingConfirmCallback = onConfirm;
+
+  let modal = new bootstrap.Modal(document.getElementById('modalCustomConfirm'));
+  modal.show();
+}
+
+document.getElementById('btnConfirmAction').onclick = function() {
+  let modalEl = document.getElementById('modalCustomConfirm');
+  let modal = bootstrap.Modal.getInstance(modalEl);
+  if (modal) modal.hide();
+  if (typeof pendingConfirmCallback === 'function') {
+    pendingConfirmCallback();
+  }
+};
+
+window.onload = function() {
+  document.getElementById('tarikh').min = new Date().toISOString().split("T")[0];
+  let currentYear = new Date().getFullYear().toString();
+  let currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0');
+  
+  if (document.getElementById('pilihTahunPengetua')) document.getElementById('pilihTahunPengetua').value = currentYear;
+  if (document.getElementById('pilihBulanPengetua')) document.getElementById('pilihBulanPengetua').value = currentMonth;
+  if (document.getElementById('filterAdminTahunStat')) document.getElementById('filterAdminTahunStat').value = currentYear;
+
+  fetchData();
+};
+
+function timeToMins(timeStr) {
+  if(!timeStr) return 0;
+  let parts = timeStr.split(':');
+  return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+}
+
+function paparTab(tabName) {
+  document.getElementById('tabForm').classList.add('d-none');
+  document.getElementById('tabSemak').classList.add('d-none');
+  document.getElementById('tabCalendar').classList.add('d-none');
+  document.getElementById('tabAdmin').classList.add('d-none');
+  document.getElementById('tabPengetua').classList.add('d-none');
+
+  document.getElementById('btnTabForm').classList.remove('active');
+  document.getElementById('btnTabSemak').classList.remove('active');
+  document.getElementById('btnTabCalendar').classList.remove('active');
+
+  if (tabName === 'form') {
+    document.getElementById('tabForm').classList.remove('d-none');
+    document.getElementById('btnTabForm').classList.add('active');
+  } else if (tabName === 'semak') {
+    document.getElementById('tabSemak').classList.remove('d-none');
+    document.getElementById('btnTabSemak').classList.add('active');
+  } else if (tabName === 'calendar') {
+    document.getElementById('tabCalendar').classList.remove('d-none');
+    document.getElementById('btnTabCalendar').classList.add('active');
+    renderCalendar();
+  } else if (tabName === 'admin') {
+    document.getElementById('tabAdmin').classList.remove('d-none');
+  } else if (tabName === 'pengetua') {
+    document.getElementById('tabPengetua').classList.remove('d-none');
+  }
+}
+
+function paparAdminTab(tabName) {
+  document.getElementById('adminTabPengurusan').classList.add('d-none');
+  document.getElementById('adminTabSekat').classList.add('d-none');
+  document.getElementById('adminTabNotifikasi').classList.add('d-none');
+  document.getElementById('adminTabProfil').classList.add('d-none');
+  document.getElementById('adminTabLaporan').classList.add('d-none');
+
+  document.getElementById('btnAdminTabPengurusan').classList.remove('active');
+  document.getElementById('btnAdminTabSekat').classList.remove('active');
+  document.getElementById('btnAdminTabNotifikasi').classList.remove('active');
+  document.getElementById('btnAdminTabProfil').classList.remove('active');
+  document.getElementById('btnAdminTabLaporan').classList.remove('active');
+
+  if (tabName === 'pengurusan') {
+    document.getElementById('adminTabPengurusan').classList.remove('d-none');
+    document.getElementById('btnAdminTabPengurusan').classList.add('active');
+  } else if (tabName === 'sekat') {
+    document.getElementById('adminTabSekat').classList.remove('d-none');
+    document.getElementById('btnAdminTabSekat').classList.add('active');
+  } else if (tabName === 'notifikasi') {
+    document.getElementById('adminTabNotifikasi').classList.remove('d-none');
+    document.getElementById('btnAdminTabNotifikasi').classList.add('active');
+  } else if (tabName === 'profil') {
+    document.getElementById('adminTabProfil').classList.remove('d-none');
+    document.getElementById('btnAdminTabProfil').classList.add('active');
+  } else if (tabName === 'laporan') {
+    document.getElementById('adminTabLaporan').classList.remove('d-none');
+    document.getElementById('btnAdminTabLaporan').classList.add('active');
+    
+    document.getElementById('reportTahun').value = document.getElementById('filterAdminTahunStat').value;
+    document.getElementById('reportBulan').value = document.getElementById('filterAdminBulanStat').value;
+    janaJadualLaporanAdmin();
+  }
+}
+
+function cubaBukaAdmin() { 
+  if (isAdminLoggedIn) {
+    paparTab('admin'); 
+    paparAdminTab('pengurusan'); 
+  } else {
+    new bootstrap.Modal(document.getElementById('modalLoginAdmin')).show(); 
+  }
+}
+
+function cubaBukaPengetua() { 
+  if (isPengetuaLoggedIn) paparTab('pengetua'); 
+  else new bootstrap.Modal(document.getElementById('modalLoginPengetua')).show(); 
+}
+
+function prosesLoginAdmin() {
+  let pass = document.getElementById('inputPassAdmin').value;
+  let msg = document.getElementById('msgLoginAdmin');
+  if(!pass) { msg.innerText = "Sila masukkan kata laluan!"; return; }
+  
+  msg.innerText = "⏳ Memeriksa...";
+  callApi('sahkanLoginAdmin', { pass: pass }).then(function(res) {
+    if (res.success) {
+      isAdminLoggedIn = true;
+      bootstrap.Modal.getInstance(document.getElementById('modalLoginAdmin')).hide();
+      paparTab('admin');
+      paparAdminTab('pengurusan');
+      loadAdminList();
+      muatTetapanAdminUI();
+      renderAdminDashboard();
+    } else { msg.innerText = res.message; }
+  });
+}
+
+function logKeluarAdmin() { 
+  isAdminLoggedIn = false; 
+  showNotification("Log Keluar", "Anda telah berjaya log keluar dari Portal Admin.", "info");
+  paparTab('form'); 
+}
+
+function prosesLoginPengetua() {
+  let pass = document.getElementById('inputPassPengetua').value;
+  let msg = document.getElementById('msgLoginPengetua');
+  if(!pass) { msg.innerText = "Sila masukkan kata laluan!"; return; }
+
+  msg.innerText = "⏳ Memeriksa...";
+  callApi('sahkanLoginPengetua', { pass: pass }).then(function(res) {
+    if (res.success) {
+      isPengetuaLoggedIn = true;
+      currentPengetuaData.nama = res.nama || 'Pengetua SMK Lundu';
+      currentPengetuaData.jawatan = res.jawatan || 'Pengetua';
+      document.getElementById('pengesahNama').value = currentPengetuaData.nama;
+      bootstrap.Modal.getInstance(document.getElementById('modalLoginPengetua')).hide();
+      paparTab('pengetua');
+      janaLaporanPengetua();
+      loadRekodPengesahanPengetua();
+    } else { msg.innerText = res.message; }
+  });
+}
+
+function logKeluarPengetua() { 
+  isPengetuaLoggedIn = false; 
+  showNotification("Log Keluar", "Anda telah berjaya log keluar dari Portal Pengetua.", "info");
+  paparTab('form'); 
+}
+
+function fetchData() {
+  callApi('getBookings').then(function(data) {
+    if (Array.isArray(data)) {
+      allBookings = data;
+      renderAllBookings();
+      updateGridAndAvailability();
+      if(isAdminLoggedIn) renderAdminDashboard();
+      if(isPengetuaLoggedIn) janaLaporanPengetua();
+    }
+  });
+}
+
+function renderAdminDashboard() { buildAdminTable(allBookings); updateDashboardStatsFiltered(); }
+
+function updateDashboardStatsFiltered() {
+  let selectedYear = document.getElementById('filterAdminTahunStat').value;
+  let selectedMonth = document.getElementById('filterAdminBulanStat').value;
+  let total = 0, approved = 0, pending = 0, rejected = 0, blocked = 0;
+
+  for (let i = 1; i < allBookings.length; i++) {
+    let row = allBookings[i];
+    let tarikh = row[0] || '';
+    if (!tarikh) continue;
+
+    let parts = tarikh.split('T')[0].split('-');
+    if (parts.length < 2) continue;
+    let yr = parts[0].trim();
+    let mo = parts[1].trim().padStart(2, '0');
+
+    if (yr !== selectedYear) continue;
+    if (selectedMonth !== 'ALL' && mo !== selectedMonth) continue;
+
+    let tujuan = row[8] ? row[8].toString() : '';
+    let status = row[10] ? row[10].toString() : '';
+
+    if (tujuan.includes("SEKATAN:")) blocked++;
+    else {
+      total++;
+      if (status === 'Approved') approved++;
+      else if (status === 'Pending for approval') pending++;
+      else if (status === 'Rejected') rejected++;
+    }
+  }
+  document.getElementById('statAdminTotal').innerText = total;
+  document.getElementById('statAdminApproved').innerText = approved;
+  document.getElementById('statAdminPending').innerText = pending;
+  document.getElementById('statAdminRejected').innerText = rejected;
+  document.getElementById('statAdminBlocked').innerText = blocked;
+}
+
+function updateGridAndAvailability() {
+  let tarikh = document.getElementById('tarikh').value;
+  let makmal = document.getElementById('makmal').value;
+  let gridDiv = document.getElementById('timeSlotGrid');
+  gridDiv.innerHTML = '';
+  let jamList = ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+
+  jamList.forEach(jam => {
+    let box = document.createElement('div');
+    box.className = 'time-slot-box slot-free';
+    box.innerHTML = `${jam}`;
+
+    if (tarikh) {
+      let slotMins = timeToMins(jam);
+      for (let i = 1; i < allBookings.length; i++) {
+        let row = allBookings[i];
+        if (row[0] === tarikh && row[1] === makmal) {
+          let status = row[10];
+          let startMins = timeToMins(row[5]);
+          let endMins = timeToMins(row[6]);
+
+          if (slotMins >= startMins && slotMins < endMins) {
+            if (status === 'Approved') {
+              box.className = 'time-slot-box slot-busy';
+              box.innerHTML = `${jam}<br>❌`;
+            } else if (status === 'Pending for approval') {
+              box.className = 'time-slot-box slot-pending';
+              box.innerHTML = `${jam}<br>⏳`;
+            }
+          }
+        }
+      }
+    }
+    gridDiv.appendChild(box);
+  });
+  checkAvailability();
+}
+
+function checkAvailability() {
+  let tarikh = document.getElementById('tarikh').value;
+  let makmal = document.getElementById('makmal').value;
+  let jamMula = document.getElementById('jamMula').value;
+  let jamTamat = document.getElementById('jamTamat').value;
+  let statusDiv = document.getElementById('availabilityStatus');
+  let submitBtn = document.getElementById('submitBtn');
+
+  if (!tarikh) return;
+  let isClash = false;
+  let conflicts = [];
+  let newStart = timeToMins(jamMula);
+  let newEnd = timeToMins(jamTamat);
+
+  for (let i = 1; i < allBookings.length; i++) {
+    let row = allBookings[i];
+    if (row[0] === tarikh && row[1] === makmal && row[10] === 'Approved') {
+      conflicts.push(`<li><b>${row[5]} - ${row[6]}</b>: ${row[8]} (${row[2]})</li>`);
+      if (jamMula && jamTamat) {
+        let existStart = timeToMins(row[5]);
+        let existEnd = timeToMins(row[6]);
+        if (newStart < existEnd && newEnd > existStart) isClash = true;
+      }
+    }
+  }
+
+  if (isClash) {
+    statusDiv.className = "p-2 bg-danger text-white rounded small";
+    statusDiv.innerHTML = `<strong>❌ MASA BERTINDIH (CLASH):</strong> Masa ini telah ditempah! Sila ubah masa.`;
+    submitBtn.disabled = true;
+  } else if (conflicts.length > 0) {
+    statusDiv.className = "p-2 bg-warning-subtle border border-warning rounded text-dark small";
+    statusDiv.innerHTML = `<strong>⚠️ Slot LULUS pada tarikh ini:</strong><ul class="mb-0 ps-3">${conflicts.join('')}</ul>`;
+    submitBtn.disabled = false;
+  } else {
+    statusDiv.className = "p-2 bg-success-subtle border border-success rounded text-success small";
+    statusDiv.innerHTML = `✅ <b>Slot KOSONG</b> bagi ${makmal} pada ${tarikh}.`;
+    submitBtn.disabled = false;
+  }
+}
+
+function calculateDuration() {
+  let mula = document.getElementById('jamMula').value;
+  let tamat = document.getElementById('jamTamat').value;
+  if (mula && tamat) {
+    let diffMins = timeToMins(tamat) - timeToMins(mula);
+    if (diffMins > 0) {
+      let hours = Math.floor(diffMins / 60);
+      let mins = diffMins % 60;
+      document.getElementById('tempoh').value = (hours > 0 ? hours + " Jam " : "") + (mins > 0 ? mins + " Minit" : "");
+    } else document.getElementById('tempoh').value = "";
+  }
+}
+
+function calculateAdminDuration() {
+  let mula = document.getElementById('adminMula').value;
+  let tamat = document.getElementById('adminTamat').value;
+  if (mula && tamat) {
+    let diffMins = timeToMins(tamat) - timeToMins(mula);
+    if (diffMins > 0) {
+      let hours = Math.floor(diffMins / 60);
+      let mins = diffMins % 60;
+      document.getElementById('adminTempoh').value = (hours > 0 ? hours + " Jam " : "") + (mins > 0 ? mins + " Minit" : "");
+    }
+  }
+}
+
+function renderAllBookings() {
+  let container = document.getElementById('bookedSlotsContainer');
+  container.innerHTML = '';
+  for (let i = allBookings.length - 1; i > 0; i--) {
+    let row = allBookings[i];
+    let status = row[10];
+    let isBlocked = row[8] && row[8].includes("SEKATAN:");
+    let cardClass = status === 'Approved' ? (isBlocked ? 'bg-secondary text-white' : 'bg-success text-white') : (status === 'Rejected' ? 'bg-danger text-white' : 'bg-warning text-dark');
+
+    let div = document.createElement('div');
+    div.className = `border rounded-3 p-3 mb-2 bg-light shadow-sm`;
+    div.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <strong class="text-primary">📍 ${row[1]}</strong>
+        <span class="badge ${cardClass} px-2 py-1 rounded-pill">${isBlocked ? 'Disekat (Kelas ICT)' : status}</span>
+      </div>
+      <div class="small"><b>📅 ${row[0]}</b> | 🕒 ${row[5]} - ${row[6]} (${row[7]})</div>
+      <div class="small text-truncate mt-1">👤 ${row[2]} (${row[4]||'-'}) - <i>${row[8]}</i></div>
+    `;
+    container.appendChild(div);
+  }
+}
+
+function prosesSemakUser() {
+  let q = document.getElementById('inputCariUser').value.toLowerCase().trim();
+  let container = document.getElementById('hasilSemakanUser');
+  container.innerHTML = '';
+  if (!q) { 
+    container.innerHTML = '<div class="alert alert-warning small text-center rounded-3">Sila masukkan Emel atau Nama anda.</div>'; 
+    return; 
+  }
+
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = String(today.getMonth() + 1).padStart(2, '0');
+  let day = String(today.getDate()).padStart(2, '0');
+  let todayStr = `${year}-${month}-${day}`;
+
+  let matches = [];
+  for (let i = 1; i < allBookings.length; i++) {
+    let row = allBookings[i];
+    let matchUser = (row[2] || '').toString().toLowerCase().includes(q) || (row[3] || '').toString().toLowerCase().includes(q);
+
+    if (matchUser) {
+      let tarikhBooking = (row[0] || '').toString().trim();
+      let status = (row[10] || '').toString().trim();
+
+      if (status === 'Approved' && tarikhBooking < todayStr) {
+        continue;
+      }
+
+      matches.push({ index: i, rowNum: i + 1, data: row });
+    }
+  }
+
+  if (matches.length === 0) { 
+    container.innerHTML = '<div class="alert alert-danger small text-center rounded-3">Tiada rekod tempahan dijumpai.</div>'; 
+    return; 
+  }
+
+  matches.reverse().forEach(item => {
+    let row = item.data;
+    let statusBadge = row[10] === 'Approved' ? '<span class="badge bg-success px-3 py-1">DILULUSKAN</span>' : (row[10] === 'Rejected' ? '<span class="badge bg-danger px-3 py-1">DITOLAK</span>' : '<span class="badge bg-warning text-dark px-3 py-1">MENUNGGU KELULUSAN</span>');
+
+    let div = document.createElement('div');
+    div.className = "border rounded-3 p-3 mb-3 bg-light shadow-sm";
+    div.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="fw-bold mb-0 text-primary">${row[1]}</h6>
+        ${statusBadge}
+      </div>
+      <div class="small mb-1"><b>Tarikh:</b> ${row[0]} | <b>Masa:</b> ${row[5]} - ${row[6]} (${row[7]})</div>
+      <div class="small mb-2"><b>Tujuan:</b> ${row[8]}</div>
+      ${row[10] === 'Rejected' && row[11] ? `<div class="p-2 bg-danger-subtle border border-danger text-danger rounded-3 small mb-3"><b>⚠️ Sebab Ditolak:</b> ${row[11]}</div>` : ''}
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-sm btn-outline-danger" onclick="bukaModalBatalUser(${item.rowNum})">🗑️ Batal Tempahan</button>
+        <button class="btn btn-sm btn-primary fw-bold" onclick="cetakSlipUser(${item.index})">🖨️ Cetak Slip Tempahan</button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function cetakSlipUser(index) {
+  let row = allBookings[index];
+  let html = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; border: 2px solid #005fb8; padding: 25px; border-radius: 12px; background: #fff;">
+      <div style="text-align: center; border-bottom: 2px solid #005fb8; padding-bottom: 15px; margin-bottom: 20px;">
+        <img src="https://lh3.googleusercontent.com/d/1Zrkv42oKLawd_FrlpUP0pDKm1EYh7s0g" alt="Logo SMK Lundu" style="height: 60px; width: auto; margin-bottom: 8px;">
+        <h3 style="color: #005fb8; margin: 0; font-weight: bold;">SMK LUNDU</h3>
+        <p style="margin: 5px 0 0; font-size: 14px; color: #555;">SLIP PENGESAHAN TEMPAHAN MAKMAL KOMPUTER</p>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
+        <tr><td style="padding: 8px; font-weight: bold; width: 35%;">Makmal Komputer:</td><td style="padding: 8px;">${row[1]}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Tarikh Guna:</td><td style="padding: 8px;">${row[0]}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Masa Penggunaan:</td><td style="padding: 8px;">${row[5]} - ${row[6]} (${row[7]})</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Nama Pemohon:</td><td style="padding: 8px;">${row[2]} (${row[4]||'-'})</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Emel Pemohon:</td><td style="padding: 8px;">${row[3]}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Tujuan Penggunaan:</td><td style="padding: 8px;">${row[8]}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Keperluan Bahan/Alat:</td><td style="padding: 8px;">${row[9]||'Tiada'}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Status Kelulusan:</td><td style="padding: 8px; font-weight: bold; color: ${row[10]==='Approved'?'#2e7d32':'#c62828'}">${row[10].toUpperCase()}</td></tr>
+        ${row[10] === 'Rejected' && row[11] ? `<tr><td style="padding: 8px; font-weight: bold; color: #c62828;">Sebab Ditolak:</td><td style="padding: 8px; font-weight: bold; color: #c62828;">${row[11]}</td></tr>` : ''}
+      </table>
+      <div style="border-top: 1px dashed #ccc; padding-top: 15px; font-size: 11px; color: #777; text-align: center;">Slip ini dijana secara automatik oleh Sistem Tempahan Makmal Komputer SMK Lundu.</div>
+    </div>
+  `;
+  document.getElementById('slipContent').innerHTML = html;
+  new bootstrap.Modal(document.getElementById('modalSlip')).show();
+}
+
+function bukaModalBatalUser(rowNum) {
+  document.getElementById('batalRowNum').value = rowNum;
+  document.getElementById('batalEmailInput').value = '';
+  new bootstrap.Modal(document.getElementById('modalBatalUser')).show();
+}
+
+function sahkanPembatalanUser() {
+  let rowNum = document.getElementById('batalRowNum').value;
+  let email = document.getElementById('batalEmailInput').value;
+  if (!email) { 
+    showNotification("Amaran", "Sila masukkan emel anda!", "warning"); 
+    return; 
+  }
+  callApi('deleteBookingUser', { rowNum: rowNum, email: email }).then(function(res) {
+    if (!res.includes("RALAT")) {
+      bootstrap.Modal.getInstance(document.getElementById('modalBatalUser')).hide();
+      fetchData(); 
+      prosesSemakUser();
+      showNotification("Berjaya", res, "success");
+    } else {
+      showNotification("Ralat", res, "danger");
+    }
+  });
+}
+
+function buildAdminTable(data) {
+  let tbody = document.getElementById('adminTableBody');
+  tbody.innerHTML = '';
+  let filterStatus = document.getElementById('filterAdminStatus').value;
+  let filterSearch = document.getElementById('filterAdminSearch').value.toLowerCase();
+  let selectedYear = document.getElementById('filterAdminTahunStat').value;
+  let selectedMonth = document.getElementById('filterAdminBulanStat').value;
+
+  for (let i = data.length - 1; i > 0; i--) {
+    let row = data[i];
+    let rowNum = i + 1;
+    let tarikh = row[0] || '';
+    let status = row[10];
+    let isBlocked = row[8] && row[8].includes("SEKATAN:");
+
+    if (tarikh) {
+      let parts = tarikh.split('T')[0].split('-');
+      if (parts.length >= 2) {
+        let yr = parts[0].trim();
+        let mo = parts[1].trim().padStart(2, '0');
+        if (yr !== selectedYear) continue;
+        if (selectedMonth !== 'ALL' && mo !== selectedMonth) continue;
+      }
+    }
+
+    if (filterStatus) {
+      if (filterStatus === 'SEKATAN:' && !isBlocked) continue;
+      if (filterStatus !== 'SEKATAN:' && status !== filterStatus) continue;
+    }
+
+    if (filterSearch && !((row[1] + " " + row[2] + " " + row[3] + " " + row[8]).toLowerCase().includes(filterSearch))) continue;
+
+    let statusBadge = status === 'Approved' ? (isBlocked ? '<span class="badge bg-secondary">Blocked</span>' : '<span class="badge bg-success">Approved</span>') : (status === 'Rejected' ? '<span class="badge bg-danger">Rejected</span>' : '<span class="badge bg-warning text-dark">Pending</span>');
+    let actionButtons = isBlocked ? `<button class="btn btn-sm btn-outline-danger py-1 px-3" onclick="handleUnblock(${rowNum})">🗑️ Unblock</button>` : 
+      (status === 'Pending for approval' ? `<button class="btn btn-sm btn-success py-1 px-2 mb-1" onclick="changeStatus(${rowNum}, 'Approved')">✔ Lulus</button> <button class="btn btn-sm btn-danger py-1 px-2 mb-1" onclick="bukaModalTolak(${rowNum})">✖ Tolak</button>` : `<button class="btn btn-sm btn-outline-secondary py-1 px-2 mb-1" onclick="changeStatus(${rowNum}, '${status}')">📩 Emel Semula</button> `) + 
+      `<button class="btn btn-sm btn-warning py-1 px-2 mb-1" onclick="bukaModalEdit(${rowNum}, ${i})">✏️ Edit</button> <button class="btn btn-sm btn-dark py-1 px-2 mb-1" onclick="handleAdminDelete(${rowNum})">🗑️ Padam</button>`;
+
+    let tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><b>${row[0]}</b></td>
+      <td>${row[1]}</td>
+      <td><b>${row[2]}</b><br><small class="text-muted">${row[3]}</small><br><small>(${row[4]||'-'})</small></td>
+      <td>${row[5]}-${row[6]}<br><small>(${row[7]})</small></td>
+      <td>${row[8]}<br><small class="text-primary">Keperluan: ${row[9]||'Tiada'}</small>${row[11] ? `<br><small class="text-danger fw-bold">Sebab Ditolak: ${row[11]}</small>` : ''}</td>
+      <td>${statusBadge}</td>
+      <td class="text-center">${actionButtons}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function bukaModalTolak(rowNum) {
+  document.getElementById('tolakRowNum').value = rowNum;
+  document.getElementById('tolakCatatanInput').value = '';
+  new bootstrap.Modal(document.getElementById('modalTolakAdmin')).show();
+}
+
+function sahkanPenolakanAdmin() {
+  let rowNum = document.getElementById('tolakRowNum').value;
+  let catatan = document.getElementById('tolakCatatanInput').value;
+  if (!catatan) { 
+    showNotification("Amaran", "Sila masukkan sebab/catatan penolakan!", "warning"); 
+    return; 
+  }
+  callApi('updateBookingStatus', { rowNum: rowNum, newStatus: 'Rejected', extraMsg: '', notePenolakan: catatan }).then(function(res) {
+    bootstrap.Modal.getInstance(document.getElementById('modalTolakAdmin')).hide();
+    fetchData();
+    showNotification("Status Dikemas Kini", res, "danger");
+  });
+}
+
+function changeStatus(rowNum, newStatus) {
+  showConfirm("Pengesahan Status", `Adakah anda pasti untuk menukar status rekod ini kepada '${newStatus}'?`, function() {
+    callApi('updateBookingStatus', { rowNum: rowNum, newStatus: newStatus, extraMsg: '', notePenolakan: '' }).then(function(res) {
+      fetchData();
+      showNotification("Status Dikemas Kini", res, "success");
+    });
+  });
+}
+
+function handleAdminDelete(rowNum) {
+  showConfirm("Padam Rekod", "Adakah anda pasti untuk memadam rekod ini secara kekal?", function() {
+    callApi('deleteBooking', { rowNum: rowNum }).then(function(res) {
+      fetchData();
+      showNotification("Padam Rekod", res, "success");
+    });
+  });
+}
+
+function handleUnblock(rowNum) {
+  showConfirm("Buka Sekatan", "Adakah anda pasti untuk membuka semula slot yang diseat ini?", function() {
+    callApi('unblockSlot', { rowNum: rowNum }).then(function(res) {
+      fetchData();
+      showNotification("Buka Sekatan", res, "success");
+    });
+  });
+}
+
+function bukaModalEdit(rowNum, index) {
+  let row = allBookings[index];
+  document.getElementById('editRowNum').value = rowNum;
+  document.getElementById('editTarikh').value = row[0];
+  document.getElementById('editMakmal').value = row[1];
+  document.getElementById('editNama').value = row[2];
+  document.getElementById('editEmail').value = row[3];
+  document.getElementById('editJawatan').value = row[4];
+  document.getElementById('editJamMula').value = row[5];
+  document.getElementById('editJamTamat').value = row[6];
+  document.getElementById('editTujuan').value = row[8];
+  document.getElementById('editBahan').value = row[9];
+  new bootstrap.Modal(document.getElementById('modalEdit')).show();
+}
+
+function simpanEditData() {
+  let data = {
+    rowNum: document.getElementById('editRowNum').value,
+    tarikh: document.getElementById('editTarikh').value,
+    makmal: document.getElementById('editMakmal').value,
+    nama: document.getElementById('editNama').value,
+    email: document.getElementById('editEmail').value,
+    jawatan: document.getElementById('editJawatan').value,
+    jamMula: document.getElementById('editJamMula').value,
+    jamTamat: document.getElementById('editJamTamat').value,
+    tempoh: document.getElementById('editJamMula').value + ' - ' + document.getElementById('editJamTamat').value,
+    tujuan: document.getElementById('editTujuan').value,
+    bahanPeralatan: document.getElementById('editBahan').value
+  };
+
+  callApi('updateBookingDetails', data).then(function(res) {
+    bootstrap.Modal.getInstance(document.getElementById('modalEdit')).hide();
+    fetchData();
+    showNotification("Kemaskini Rekod", res, "success");
+  });
+}
+
+function handleFormSubmit(e) {
+  e.preventDefault();
+  let submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.innerText = "⏳ Menghantar...";
+
+  let form = e.target;
+  let formData = {
+    tarikh: form.tarikh.value,
+    makmal: form.makmal.value,
+    nama: form.nama.value,
+    email: form.email.value,
+    jawatan: form.jawatan.value,
+    jamMula: form.jamMula.value,
+    jamTamat: form.jamTamat.value,
+    tempoh: form.tempoh.value,
+    tujuan: form.tujuan.value,
+    bahanPeralatan: form.bahanPeralatan.value
+  };
+
+  callApi('submitBooking', formData).then(function(res) {
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Hantar Permohonan";
+    if (typeof res === 'string' && res.includes("RALAT")) {
+      showNotification("Ralat", res, "danger");
+    } else {
+      showNotification("Permohonan Berjaya", res, "success");
+      form.reset();
+      fetchData();
+    }
+  });
+}
+
+function handleBlockSubmit(e) {
+  e.preventDefault();
+  let form = e.target;
+  let blockData = {
+    tarikh: form.tarikh.value,
+    repeatUntil: form.repeatUntil.value,
+    makmal: form.makmal.value,
+    jamMula: form.jamMula.value,
+    jamTamat: form.jamTamat.value,
+    tempoh: form.tempoh.value,
+    tujuan: form.tujuan.value
+  };
+
+  callApi('blockSlotAdminRepeating', blockData).then(function(res) {
+    showNotification("Sekat Slot", res, "success");
+    form.reset();
+    fetchData();
+  });
+}
+
+function handleAddAdminSubmit(e) {
+  e.preventDefault();
+  let nama = document.getElementById('adminNama').value;
+  let email = document.getElementById('adminEmail').value;
+
+  callApi('addAdminUser', { nama: nama, email: email }).then(function(res) {
+    showNotification("Notifikasi Admin", res, res.includes("RALAT") || res.includes("⚠️") ? "warning" : "success");
+    document.getElementById('addAdminForm').reset();
+    loadAdminList();
+  });
+}
+
+function loadAdminList() {
+  callApi('getAdminList').then(function(list) {
+    let container = document.getElementById('adminListContainer');
+    container.innerHTML = '';
+    if (!list || list.length === 0) {
+      container.innerHTML = '<div class="text-muted small text-center py-2">Tiada penerima emel notifikasi.</div>';
+      return;
+    }
+    list.forEach(item => {
+      let div = document.createElement('div');
+      div.className = "list-group-item d-flex justify-content-between align-items-center small";
+      div.innerHTML = `
+        <div><b>${item.nama}</b><br><span class="text-muted">${item.email}</span></div>
+        <button class="btn btn-sm btn-outline-danger" onclick="deleteAdmin(${item.rowNum})">🗑️</button>
+      `;
+      container.appendChild(div);
+    });
+  });
+}
+
+function deleteAdmin(rowNum) {
+  callApi('removeAdminUser', { rowNum: rowNum }).then(function(res) {
+    showNotification("Notifikasi Admin", res, "success");
+    loadAdminList();
+  });
+}
+
+function muatTetapanAdminUI() {
+  callApi('dapatkanTetapanAdmin').then(function(data) {
+    document.getElementById('tetapanAdminNama').value = data.nama || '';
+    document.getElementById('tetapanAdminEmel').value = data.emel || '';
+    document.getElementById('tetapanAdminPass').value = data.password || '';
+  });
+}
+
+function simpanProfilAdmin() {
+  let data = {
+    nama: document.getElementById('tetapanAdminNama').value,
+    emel: document.getElementById('tetapanAdminEmel').value,
+    password: document.getElementById('tetapanAdminPass').value
+  };
+  callApi('simpanTetapanAdmin', data).then(function(res) {
+    document.getElementById('msgTetapanAdmin').innerText = res;
+    setTimeout(() => { document.getElementById('msgTetapanAdmin').innerText = ''; }, 3000);
+  });
+}
+
+function muatTurunCSV() {
+  if (allBookings.length <= 1) return;
+  let csvContent = "data:text/csv;charset=utf-8,";
+  allBookings.forEach(row => {
+    let rowStr = row.map(cell => `"${(cell || '').toString().replace(/"/g, '""')}"`).join(",");
+    csvContent += rowStr + "\r\n";
+  });
+  let encodedUri = encodeURI(csvContent);
+  let link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `Rekod_Tempahan_Makmal_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function bukaGoogleSheet() {
+  callApi('dapatkanSpreadsheetUrl').then(function(url) {
+    if (url) window.open(url, '_blank');
+  });
+}
+
+function renderCalendar() {
+  let calendarEl = document.getElementById('calendar');
+  if (!calendarEl) return;
+  if (calendarInstance) calendarInstance.destroy();
+
+  let events = [];
+  for (let i = 1; i < allBookings.length; i++) {
+    let row = allBookings[i];
+    if (row[0]) {
+      let isBlocked = row[8] && row[8].includes("SEKATAN:");
+      let color = row[10] === 'Approved' ? (isBlocked ? '#6c757d' : '#2e7d32') : (row[10] === 'Rejected' ? '#c62828' : '#f57f17');
+      events.push({
+        title: `${row[1]} - ${row[2]} (${row[5]}-${row[6]})`,
+        start: row[0],
+        backgroundColor: color,
+        borderColor: color
+      });
+    }
+  }
+
+  calendarInstance = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek'
+    },
+    events: events
+  });
+  calendarInstance.render();
+}
+
+function janaJadualLaporanAdmin() {
+  let selYear = document.getElementById('reportTahun').value;
+  let selMonth = document.getElementById('reportBulan').value;
+  let tbody = document.getElementById('tbodyLaporanPengguna');
+  tbody.innerHTML = '';
+
+  let userStats = {};
+  let totalAll = 0, approvedAll = 0, rejectedAll = 0;
+
+  for (let i = 1; i < allBookings.length; i++) {
+    let row = allBookings[i];
+    let tarikh = row[0] ? row[0].toString().trim() : '';
+    if (!tarikh) continue;
+
+    let parts = tarikh.split('T')[0].split('-');
+    if (parts.length < 2) continue;
+    let yr = parts[0].trim();
+    let mo = parts[1].trim().padStart(2, '0');
+
+    if (yr !== selYear) continue;
+    if (selMonth !== 'ALL' && mo !== selMonth) continue;
+
+    let nama = row[2] || 'Tanpa Nama';
+    let email = row[3] || '-';
+    let jawatan = row[4] || '-';
+    let status = row[10] || '';
+    let key = nama + '___' + email;
+
+    if (!userStats[key]) {
+      userStats[key] = { nama: nama, email: email, jawatan: jawatan, mohon: 0, lulus: 0, tolak: 0, list: [] };
+    }
+
+    userStats[key].mohon++;
+    totalAll++;
+
+    if (status === 'Approved') {
+      userStats[key].lulus++;
+      approvedAll++;
+    } else if (status === 'Rejected') {
+      userStats[key].tolak++;
+      rejectedAll++;
+    }
+
+    userStats[key].list.push(`${row[0]} [${row[1]}]: ${row[5]}-${row[6]} (${status})`);
+  }
+
+  document.getElementById('repStatTotal').innerText = totalAll;
+  document.getElementById('repStatApproved').innerText = approvedAll;
+  document.getElementById('repStatRejected').innerText = rejectedAll;
+
+  let keys = Object.keys(userStats);
+  if (keys.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Tiada rekod laporan untuk tempoh ini.</td></tr>';
+    return;
+  }
+
+  keys.forEach(k => {
+    let u = userStats[k];
+    let tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><b>${u.nama}</b></td>
+      <td>${u.email}<br><small class="text-muted">${u.jawatan}</small></td>
+      <td class="text-center fw-bold">${u.mohon}</td>
+      <td class="text-center text-success fw-bold">${u.lulus}</td>
+      <td class="text-center text-danger fw-bold">${u.tolak}</td>
+      <td><ul class="mb-0 ps-3 extra-small">${u.list.map(l => `<li>${l}</li>`).join('')}</ul></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function janaLaporanPengetua() {
+  let selYear = document.getElementById('pilihTahunPengetua').value;
+  let selMonth = document.getElementById('pilihBulanPengetua').value;
+
+  let monthNames = {
+    "01": "Januari", "02": "Februari", "03": "Mac", "04": "April",
+    "05": "Mei", "06": "Jun", "07": "Julai", "08": "Ogos",
+    "09": "September", "10": "Oktober", "11": "November", "12": "Disember"
+  };
+
+  document.getElementById('pengesahBulanTahun').value = (monthNames[selMonth] || selMonth) + " " + selYear;
+
+  let totalMonth = 0, approvedMonth = 0, rejectedMonth = 0;
+  let approvedList = [];
+
+  for (let i = 1; i < allBookings.length; i++) {
+    let row = allBookings[i];
+    let tarikh = row[0] ? row[0].toString().trim() : '';
+    if (!tarikh) continue;
+
+    let parts = tarikh.split('T')[0].split('-');
+    if (parts.length < 2) continue;
+    let yr = parts[0].trim();
+    let mo = parts[1].trim().padStart(2, '0');
+
+    if (yr === selYear && mo === selMonth) {
+      totalMonth++;
+      let status = row[10] || '';
+      if (status === 'Approved') {
+        approvedMonth++;
+        approvedList.push(row);
+      } else {
+        rejectedMonth++;
+      }
+    }
+  }
+
+  document.getElementById('pengetuaTotalMonth').innerText = totalMonth;
+  document.getElementById('pengetuaApprovedMonth').innerText = approvedMonth;
+  document.getElementById('pengetuaRejectedMonth').innerText = rejectedMonth;
+
+  let titleEl = document.getElementById('titleSenaraiPengetua');
+  if (titleEl) titleEl.innerText = `📋 Senarai Tempahan Yang Diluluskan (${approvedList.length} Rekod)`;
+
+  let tbody = document.getElementById('tableRekodTempahanPengetua');
+  tbody.innerHTML = '';
+
+  if (approvedList.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Tiada rekod tempahan yang diluluskan bagi bulan ini.</td></tr>';
+    return;
+  }
+
+  approvedList.forEach(row => {
+    let tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><b>${row[0]}</b></td>
+      <td>${row[1]}</td>
+      <td><b>${row[2]}</b><br><small class="text-muted">${row[4]||'-'}</small></td>
+      <td>${row[5]} - ${row[6]} (${row[7]})</td>
+      <td>${row[8]}<br><small class="text-primary">Bahan: ${row[9]||'Tiada'}</small></td>
+      <td><span class="badge bg-success">DILULUSKAN</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function hantarPengesahanPengetua() {
+  let data = {
+    bulanTahun: document.getElementById('pengesahBulanTahun').value,
+    nama: document.getElementById('pengesahNama').value,
+    jawatan: currentPengetuaData.jawatan || 'Pengetua',
+    catatan: document.getElementById('pengesahCatatan').value
+  };
+
+  if (!data.catatan) {
+    showNotification("Amaran", "Sila masukkan catatan/ulasan sebelum mengesahkan laporan.", "warning");
+    return;
+  }
+
+  callApi('simpanPengesahanPengetua', data).then(function(res) {
+    showNotification("Pengesahan Laporan", res, "success");
+    document.getElementById('pengesahCatatan').value = '';
+    loadRekodPengesahanPengetua();
+  });
+}
+
+function loadRekodPengesahanPengetua() {
+  callApi('dapatkanRekodPengesahanPengetua').then(function(list) {
+    globalRekodPengetua = list;
+    let tbody = document.getElementById('tableRekodPengesahanPengetua');
+    tbody.innerHTML = '';
+
+    if (!list || list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Tiada rekod pengesahan laporan.</td></tr>';
+      return;
+    }
+
+    list.reverse().forEach((item, idx) => {
+      let tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><b>${item.timestamp}</b><br><small class="text-primary">${item.bulanTahun}</small></td>
+        <td><b>${item.nama}</b><br><small class="text-muted">${item.jawatan}</small></td>
+        <td>${item.catatan}</td>
+        <td class="text-center"><button class="btn btn-sm btn-primary fw-bold" onclick="cetakLaporanPengetua(${idx})">🖨️ Cetak Laporan</button></td>
+        <td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="padamPengesahanPengetua('${item.timestamp}')">🗑️ Padam</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function cetakLaporanPengetua(index) {
+  let item = globalRekodPengetua[index];
+  if (!item) return;
+
+  let html = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; border: 2px solid #005fb8; padding: 25px; border-radius: 12px; background: #fff;">
+      <div style="text-align: center; border-bottom: 2px solid #005fb8; padding-bottom: 15px; margin-bottom: 20px;">
+        <img src="https://lh3.googleusercontent.com/d/1Zrkv42oKLawd_FrlpUP0pDKm1EYh7s0g" alt="Logo SMK Lundu" style="height: 60px; width: auto; margin-bottom: 8px;">
+        <h3 style="color: #005fb8; margin: 0; font-weight: bold;">SMK LUNDU</h3>
+        <p style="margin: 5px 0 0; font-size: 14px; color: #555;">LAPORAN BULANAN PENGGUNAAN MAKMAL KOMPUTER</p>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
+        <tr><td style="padding: 8px; font-weight: bold; width: 35%;">Bulan / Tahun Pelaporan:</td><td style="padding: 8px;">${item.bulanTahun}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Tarikh & Masa Pengesahan:</td><td style="padding: 8px;">${item.timestamp}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Nama Pengesah:</td><td style="padding: 8px;">${item.nama} (${item.jawatan})</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold;">Catatan / Ulasan Pengetua:</td><td style="padding: 8px;">${item.catatan}</td></tr>
+      </table>
+      <div style="margin-top: 40px; text-align: right; font-size: 13px;">
+        <p style="margin-bottom: 50px;">Disahkan oleh,</p>
+        <p><b>_______________________</b><br><b>(${item.nama})</b><br>${item.jawatan}</p>
+      </div>
+      <div style="border-top: 1px dashed #ccc; padding-top: 15px; font-size: 11px; color: #777; text-align: center; margin-top: 30px;">
+        Laporan ini dijana secara rasmi melalui Portal Pengetua Sistem Tempahan Makmal Komputer SMK Lundu.
+      </div>
+    </div>
+  `;
+  document.getElementById('slipPelaporanContent').innerHTML = html;
+  new bootstrap.Modal(document.getElementById('modalSlipPelaporan')).show();
+}
+
+function padamPengesahanPengetua(timestamp) {
+  showConfirm("Padam Rekod Pengesahan", "Adakah anda pasti untuk memadam rekod pengesahan ini?", function() {
+    callApi('deleteRekodPengesahanPengetua', { timestamp: timestamp }).then(function(res) {
+      showNotification("Padam Rekod", res, "success");
+      loadRekodPengesahanPengetua();
+    });
+  });
+}
+</script>
+</body>
+</html>
